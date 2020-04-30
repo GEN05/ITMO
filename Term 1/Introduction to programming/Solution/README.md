@@ -20,7 +20,7 @@
 Результат: 0  
 +  Аргументы могут содержать цифры и произвольные [пробельные символы](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Character.html#isWhitespace(char)).
 +  При выполнении задания можно считать, что для представления входных данных и промежуточных результатов достаточен тип int.
-+  При выполнении задания полезно ознакомиться с документацией к классам [String](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html) и [Integer](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Integer.html).
++  При выполнении задания полезно ознакомиться с документацией к классам [String](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html) и [Integer](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Integer.html).  
 [Решение](2_Sum/SumLong.java)
 ##  Домашнее задание 3. Реверс  
 +  Разработайте класс *Reverse*, читающий числа из стандартного входа, и выводящий их на стандартный вывод в обратном порядке.
@@ -43,7 +43,8 @@
 -3 2
 
 1
-```
+```  
+[Решение](3_Reverse/ReverseEven.java)
 ##  Домашнее задание 4. Статистика слов
 +  Разработайте класс *WordStat*, который будет подсчитывать статистику встречаемости слов во входном файле.
 +  Словом называется непрерывная последовательность букв, апострофов и тире (Unicode category Punctuation, Dash). Для подсчета статистики, слова приводятся к нижнему регистру.
@@ -87,7 +88,8 @@
     свалился 1
     во 1
     сне 1
-```
+```  
+[Решение](4_WordStat/WordStatWords.java)
 ##  Домашнее задание 5. Свой сканер
 +  Реализуйте свой аналог класса *Scanner* на основе *Reader*.
 +  Примените разработанный *Scanner* для решения задания «Реверс».
