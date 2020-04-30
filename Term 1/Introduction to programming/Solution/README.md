@@ -20,7 +20,8 @@
 Результат: 0  
 +  Аргументы могут содержать цифры и произвольные [пробельные символы](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Character.html#isWhitespace(char)).
 +  При выполнении задания можно считать, что для представления входных данных и промежуточных результатов достаточен тип int.
-+  При выполнении задания полезно ознакомиться с документацией к классам [String](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html) и [Integer](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Integer.html).  
++  При выполнении задания полезно ознакомиться с документацией к классам [String](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html) и [Integer](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Integer.html).
+[Решение](2_Sum/SumLong.java)
 ##  Домашнее задание 3. Реверс  
 +  Разработайте класс *Reverse*, читающий числа из стандартного входа, и выводящий их на стандартный вывод в обратном порядке.
 +  В каждой строке входа содержится некоторое количество целых чисел (может быть 0). Числа разделены пробелами. Каждое число помещается в тип int.
