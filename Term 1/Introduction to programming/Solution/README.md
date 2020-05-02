@@ -1,6 +1,6 @@
 # Условия домашних заданий  
 ##  Домашнее задание + Запусти меня!  
-[Тесты к домашним работам](https://github.com/GEN05/ITMO/tree/master/Tests)  
+[Тесты к домашним работам](https://github.com/GEN05/ITMO/tree/master/Term%201/Introduction%20to%20programming/Tests)  
 +  Установите [JDK 11+](https://adoptopenjdk.net/?variant=openjdk11&jvmVariant=hotspot)
 +  Скопируйте один из вариантов *HelloWorld*, рассмотренных на лекции.
 +  Откомпилируйте *HelloWorld.java* и получите *HelloWorld.class*
