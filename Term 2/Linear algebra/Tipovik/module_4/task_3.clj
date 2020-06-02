@@ -36,7 +36,40 @@
 (def a3 [-1, 0, 2, 3, -1])
 (def a1 [0, 1, -1, -1, 1])
 
-(println "x a1 = a (a1, a1) + b (a1, a2) + c (a1, a3)")
+(def moduleA1 (Math/sqrt (scalar a1 a1)))
+
+(println
+    "var 1\n"
+    "module a1 = "
+    moduleA1)
+
+(def e1 (v*s a1 (/ 1 moduleA1)))
+
+(println
+    "e1 = "
+    e1)
+
+(def tempE2 (v- a2 (v*s e1 (scalar a2 e1))))
+(def e2 (v*s tempE2 (/ 1 (Math/sqrt (scalar tempE2 tempE2)))))
+(println
+    "e2 = "
+    e2)
+
+(def tempE3 (v- a3 (v*s e1 (scalar a3 e1)) (v*s e2 (scalar a3 e2))))
+(def e3 (v*s tempE3 (/ 1 (Math/sqrt (scalar tempE3 tempE3)))))
+(println
+    "e3 = "
+    e3)
+
+(def xl (v+ (v*s e1 (scalar x e1)) (v*s e2 (scalar x e2)) (v*s e3 (scalar x e3))))
+(println "xl = " xl)
+
+(def xm (v- x xl))
+(println "xm = " xm)
+
+(println
+    "var 2\n"
+    "x a1 = a (a1, a1) + b (a1, a2) + c (a1, a3)")
 (println
     (scalar x a1)
     "="
@@ -71,6 +104,8 @@
 (def b 1.6)
 (def c -0.4)
 
+
+(def xl2 (v+ (v*s a1 a) (v*s a2 b) (v*s a3 c)))
 (println
     (v*s a1 a)
     "+"
@@ -78,4 +113,7 @@
     "+"
     (v*s a3 c)
     "="
-    (v+ (v*s a1 a) (v*s a2 b) (v*s a3 c)))
+    xl2)
+(def xm2 (v- x xl2))
+(println "xm2 = " xm2)
+
