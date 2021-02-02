@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html class="client-nojs" lang="ru" dir="ltr">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Алгоритм Ахо-Корасик — Викиконспекты</title>
+    <script>document.documentElement.className = document.documentElement.className.replace(/(^|\s)client-nojs(\s|$)/, "$1client-js$2");</script>
+    <script>(window.RLQ = window.RLQ || []).push(function () {
+        mw.config.set({
+            "wgCanonicalNamespace": "",
+            "wgCanonicalSpecialPageName": false,
+            "wgNamespaceNumber": 0,
+            "wgPageName": "Алгоритм_Ахо-Корасик",
+            "wgTitle": "Алгоритм Ахо-Корасик",
+            "wgCurRevisionId": 72157,
+            "wgRevisionId": 72157,
+            "wgArticleId": 971,
+            "wgIsArticle": true,
+            "wgIsRedirect": false,
+            "wgAction": "view",
+            "wgUserName": null,
+            "wgUserGroups": ["*"],
+            "wgCategories": ["Дискретная математика и алгоритмы", "Поиск подстроки в строке", "Точный поиск"],
+            "wgBreakFrames": false,
+            "wgPageContentLanguage": "ru",
+            "wgPageContentModel": "wikitext",
+            "wgSeparatorTransformTable": [",\t.", " \t,"],
+            "wgDigitTransformTable": ["", ""],
+            "wgDefaultDateFormat": "dmy",
+            "wgMonthNames": ["", "январь", "февраль", "март", "апрель", "май", "июнь", "июль", "август", "сентябрь", "октябрь", "ноябрь", "декабрь"],
+            "wgMonthNamesShort": ["", "янв", "фев", "мар", "апр", "май", "июн", "июл", "авг", "сен", "окт", "ноя", "дек"],
+            "wgRelevantPageName": "Алгоритм_Ахо-Корасик",
+            "wgRelevantArticleId": 971,
+            "wgRequestId": "51ee47424ab46701c8426b92",
+            "wgIsProbablyEditable": true,
+            "wgRelevantPageIsProbablyEditable": true,
+            "wgRestrictionEdit": [],
+            "wgRestrictionMove": [],
+            "wgPreferredVariant": "ru",
+            "wgMFExpandAllSectionsUserOption": false,
+            "wgMFDisplayWikibaseDescriptions": {"search": false, "nearby": false, "watchlist": false, "tagline": false},
+            "wgSmjSize": 110,
+            "wgSmjUseChem": true,
+            "wgSmjInlineMath": [["$", "$"], ["[math]", "[/math]"]]
+        });
+        mw.loader.state({
+            "site.styles": "ready",
+            "noscript": "ready",
+            "user.styles": "ready",
+            "user": "ready",
+            "user.options": "loading",
+            "user.tokens": "loading",
+            "mediawiki.legacy.shared": "ready",
+            "mediawiki.legacy.commonPrint": "ready",
+            "mediawiki.sectionAnchor": "ready",
+            "mediawiki.skinning.interface": "ready",
+            "skins.vector.styles": "ready"
+        });
+        mw.loader.implement("user.options@1dzjbvu", function ($, jQuery, require, module) {
+            mw.user.options.set({"variant": "ru"});
+        });
+        mw.loader.implement("user.tokens@1sumy7b", function ($, jQuery, require, module) {
+            mw.user.tokens.set({"editToken": "+\\", "patrolToken": "+\\", "watchToken": "+\\", "csrfToken": "+\\"});/*@nomin*/
+
+        });
+        mw.loader.load(["ext.SmjLocal", "site", "mediawiki.page.startup", "mediawiki.user", "mediawiki.hidpi", "mediawiki.page.ready", "mediawiki.toc", "mediawiki.searchSuggest", "skins.vector.js"]);
+    });</script>
+    <link rel="stylesheet"
+          href="/wiki/load.php?debug=false&amp;lang=ru&amp;modules=mediawiki.legacy.commonPrint%2Cshared%7Cmediawiki.sectionAnchor%7Cmediawiki.skinning.interface%7Cskins.vector.styles&amp;only=styles&amp;skin=vector"/>
+    <script async=""
+            src="/wiki/load.php?debug=false&amp;lang=ru&amp;modules=startup&amp;only=scripts&amp;skin=vector"></script>
+    <meta name="ResourceLoaderDynamicStyles" content=""/>
+    <meta name="generator" content="MediaWiki 1.30.0"/>
+    <link rel="alternate" type="application/x-wiki" title="Править"
+          href="/wiki/index.php?title=%D0%90%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC_%D0%90%D1%85%D0%BE-%D0%9A%D0%BE%D1%80%D0%B0%D1%81%D0%B8%D0%BA&amp;action=edit"/>
+    <link rel="edit" title="Править"
+          href="/wiki/index.php?title=%D0%90%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC_%D0%90%D1%85%D0%BE-%D0%9A%D0%BE%D1%80%D0%B0%D1%81%D0%B8%D0%BA&amp;action=edit"/>
+    <link rel="shortcut icon" href="/favicon.ico"/>
+    <link rel="search" type="application/opensearchdescription+xml" href="/wiki/opensearch_desc.php"
+          title="Викиконспекты (ru)"/>
+    <link rel="EditURI" type="application/rsd+xml" href="http://neerc.ifmo.ru/wiki/api.php?action=rsd"/>
+    <link rel="alternate" type="application/atom+xml" title="Викиконспекты — Atom-лента"
+          href="/wiki/index.php?title=%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:%D0%A1%D0%B2%D0%B5%D0%B6%D0%B8%D0%B5_%D0%BF%D1%80%D0%B0%D0%B2%D0%BA%D0%B8&amp;feed=atom"/>
+    <!--[if lt IE 9]>
+    <script src="/resources/lib/html5shiv/html5shiv.min.js"></script><![endif]-->
+</head>
+<body class="mediawiki ltr sitedir-ltr mw-hide-empty-elt ns-0 ns-subject page-Алгоритм_Ахо-Корасик rootpage-Алгоритм_Ахо-Корасик skin-vector action-view">
+<div id="mw-page-base" class="noprint"></div>
+<div id="mw-head-base" class="noprint"></div>
+<div id="content" class="mw-body" role="main">
+    <a id="top"></a>
+
+    <div class="mw-indicators mw-body-content">
+    </div>
+    <h1 id="firstHeading" class="firstHeading" lang="ru">Алгоритм Ахо-Корасик</h1>
+    <div id="bodyContent" class="mw-body-content">
+        <div id="siteSub" class="noprint">Материал из Викиконспекты</div>
+        <div id="contentSub"></div>
+        <div id="jump-to-nav" class="mw-jump">
+            Перейти к: <a href="#mw-head">навигация</a>, <a href="#p-search">поиск</a>
+        </div>
+        <div id="mw-content-text" lang="ru" dir="ltr" class="mw-content-ltr">
+            <div class="mw-parser-output">
+                <table border="0" width="100%">
+                    <tr>
+                        <td style="background-color: #ddd"><b>Задача:</b></td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px dashed #2f6fab; padding: 8px; background-color: #fcfcfc; font-style: italic;">
+                            Дан набор строк в алфавите размера <span style='display:none'>[math]k[/math]</span>
+                            суммарной длины <span style='display:none'>[math]m[/math]</span>. Необходимо найти для
+                            каждой строки все ее вхождения в текст.
+                        </td>
+                    </tr>
+                </table>
+                <p><br/>
+                </p>
+                <div id="toc" class="toc">
+                    <div class="toctitle"><h2>Содержание</h2></div>
+                    <ul>
+                        <li class="toclevel-1 tocsection-1"><a href="#.D0.90.D0.BB.D0.B3.D0.BE.D1.80.D0.B8.D1.82.D0.BC"><span
+                                class="tocnumber">1</span> <span class="toctext">Алгоритм</span></a>
+                            <ul>
+                                <li class="toclevel-2 tocsection-2"><a
+                                        href="#.D0.A8.D0.B0.D0.B3_1._.D0.9F.D0.BE.D1.81.D1.82.D1.80.D0.BE.D0.B5.D0.BD.D0.B8.D0.B5_.D0.B1.D0.BE.D1.80.D0.B0"><span
+                                        class="tocnumber">1.1</span> <span class="toctext">Шаг 1. Построение бора</span></a>
+                                    <ul>
+                                        <li class="toclevel-3 tocsection-3"><a
+                                                href="#.D0.9F.D1.80.D0.B8.D0.BC.D0.B5.D1.80_.D0.BF.D0.BE.D1.81.D1.82.D1.80.D0.BE.D0.B5.D0.BD.D0.BD.D0.BE.D0.B3.D0.BE_.D0.B1.D0.BE.D1.80.D0.B0"><span
+                                                class="tocnumber">1.1.1</span> <span class="toctext">Пример построенного бора</span></a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="toclevel-2 tocsection-4"><a
+                                        href="#.D0.A8.D0.B0.D0.B3_2._.D0.9F.D1.80.D0.B5.D0.BE.D0.B1.D1.80.D0.B0.D0.B7.D0.BE.D0.B2.D0.B0.D0.BD.D0.B8.D0.B5_.D0.B1.D0.BE.D1.80.D0.B0"><span
+                                        class="tocnumber">1.2</span> <span
+                                        class="toctext">Шаг 2. Преобразование бора</span></a>
+                                    <ul>
+                                        <li class="toclevel-3 tocsection-5"><a
+                                                href="#.D0.9F.D1.80.D0.B8.D0.BC.D0.B5.D1.80_.D0.B0.D0.B2.D1.82.D0.BE.D0.BC.D0.B0.D1.82.D0.B0_.D0.90.D1.85.D0.BE-.D0.9A.D0.BE.D1.80.D0.B0.D1.81.D0.B8.D0.BA"><span
+                                                class="tocnumber">1.2.1</span> <span class="toctext">Пример автомата Ахо-Корасик</span></a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="toclevel-2 tocsection-6"><a
+                                        href="#.D0.A8.D0.B0.D0.B3_3._.D0.9F.D0.BE.D1.81.D1.82.D1.80.D0.BE.D0.B5.D0.BD.D0.B8.D0.B5_.D1.81.D0.B6.D0.B0.D1.82.D1.8B.D1.85_.D1.81.D1.83.D1.84.D1.84.D0.B8.D0.BA.D1.81.D0.BD.D1.8B.D1.85_.D1.81.D1.81.D1.8B.D0.BB.D0.BE.D0.BA"><span
+                                        class="tocnumber">1.3</span> <span class="toctext">Шаг 3. Построение сжатых суффиксных ссылок</span></a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="toclevel-1 tocsection-7"><a
+                                href="#.D0.98.D1.81.D0.BF.D0.BE.D0.BB.D1.8C.D0.B7.D0.BE.D0.B2.D0.B0.D0.BD.D0.B8.D0.B5_.D0.B0.D0.B2.D1.82.D0.BE.D0.BC.D0.B0.D1.82.D0.B0"><span
+                                class="tocnumber">2</span> <span class="toctext">Использование автомата</span></a></li>
+                        <li class="toclevel-1 tocsection-8"><a
+                                href="#.D0.9F.D1.80.D0.B8.D0.BC.D0.B5.D1.80_.D1.80.D0.B5.D0.B0.D0.BB.D0.B8.D0.B7.D0.B0.D1.86.D0.B8.D0.B8"><span
+                                class="tocnumber">3</span> <span class="toctext">Пример реализации</span></a></li>
+                        <li class="toclevel-1 tocsection-9"><a
+                                href="#.D0.9E.D0.BF.D1.82.D0.B8.D0.BC.D0.B8.D0.B7.D0.B0.D1.86.D0.B8.D0.B8"><span
+                                class="tocnumber">4</span> <span class="toctext">Оптимизации</span></a></li>
+                        <li class="toclevel-1 tocsection-10"><a
+                                href="#.D0.9F.D0.BE.D0.B8.D1.81.D0.BA_.D1.88.D0.B0.D0.B1.D0.BB.D0.BE.D0.BD.D0.BE.D0.B2_.D1.81_.D0.BC.D0.B0.D1.81.D0.BA.D0.B0.D0.BC.D0.B8"><span
+                                class="tocnumber">5</span> <span class="toctext">Поиск шаблонов с масками</span></a>
+                            <ul>
+                                <li class="toclevel-2 tocsection-11"><a
+                                        href="#.D0.90.D0.BB.D0.B3.D0.BE.D1.80.D0.B8.D1.82.D0.BC_.D0.BF.D0.BE.D0.B8.D1.81.D0.BA.D0.B0"><span
+                                        class="tocnumber">5.1</span> <span class="toctext">Алгоритм поиска</span></a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="toclevel-1 tocsection-12"><a
+                                href="#.D0.A1.D0.BC._.D1.82.D0.B0.D0.BA.D0.B6.D0.B5"><span class="tocnumber">6</span>
+                            <span class="toctext">См. также</span></a></li>
+                        <li class="toclevel-1 tocsection-13"><a
+                                href="#.D0.98.D1.81.D1.82.D0.BE.D1.87.D0.BD.D0.B8.D0.BA.D0.B8_.D0.B8.D0.BD.D1.84.D0.BE.D1.80.D0.BC.D0.B0.D1.86.D0.B8.D0.B8"><span
+                                class="tocnumber">7</span> <span class="toctext">Источники информации</span></a></li>
+                    </ul>
+                </div>
+
+                <h2><span class="mw-headline" id=".D0.90.D0.BB.D0.B3.D0.BE.D1.80.D0.B8.D1.82.D0.BC">Алгоритм</span><span
+                        class="mw-editsection"><span class="mw-editsection-bracket">[</span><a
+                        href="/wiki/index.php?title=%D0%90%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC_%D0%90%D1%85%D0%BE-%D0%9A%D0%BE%D1%80%D0%B0%D1%81%D0%B8%D0%BA&amp;action=edit&amp;section=1"
+                        title="Редактировать раздел «Алгоритм»">править</a><span class="mw-editsection-bracket">]</span></span>
+                </h2>
+                <h3><span class="mw-headline"
+                          id=".D0.A8.D0.B0.D0.B3_1._.D0.9F.D0.BE.D1.81.D1.82.D1.80.D0.BE.D0.B5.D0.BD.D0.B8.D0.B5_.D0.B1.D0.BE.D1.80.D0.B0">Шаг 1. Построение бора</span><span
+                        class="mw-editsection"><span class="mw-editsection-bracket">[</span><a
+                        href="/wiki/index.php?title=%D0%90%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC_%D0%90%D1%85%D0%BE-%D0%9A%D0%BE%D1%80%D0%B0%D1%81%D0%B8%D0%BA&amp;action=edit&amp;section=2"
+                        title="Редактировать раздел «Шаг 1. Построение бора»">править</a><span
+                        class="mw-editsection-bracket">]</span></span></h3>
+                <p>Строим <a href="/wiki/index.php?title=%D0%91%D0%BE%D1%80" title="Бор">бор</a> из строк.<br/>
+                    Построение выполняется за время <span style='display:none'>[math]O(m)[/math]</span>, где <span
+                            style='display:none'>[math]m[/math]</span> — суммарная длина строк.
+                </p>
+                <h4><span class="mw-headline"
+                          id=".D0.9F.D1.80.D0.B8.D0.BC.D0.B5.D1.80_.D0.BF.D0.BE.D1.81.D1.82.D1.80.D0.BE.D0.B5.D0.BD.D0.BD.D0.BE.D0.B3.D0.BE_.D0.B1.D0.BE.D1.80.D0.B0">Пример построенного бора</span><span
+                        class="mw-editsection"><span class="mw-editsection-bracket">[</span><a
+                        href="/wiki/index.php?title=%D0%90%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC_%D0%90%D1%85%D0%BE-%D0%9A%D0%BE%D1%80%D0%B0%D1%81%D0%B8%D0%BA&amp;action=edit&amp;section=3"
+                        title="Редактировать раздел «Пример построенного бора»">править</a><span
+                        class="mw-editsection-bracket">]</span></span></h4>
+                <p>Бор для набора строк <span style='display:none'>[math] \{ \textbf{he},\ \textbf{she},\ \textbf{his},\ \textbf{hers}\} [/math]</span>:<br/>
+                    <a href="/wiki/index.php?title=%D0%A4%D0%B0%D0%B9%D0%BB:%D0%91%D0%BE%D1%80.jpg" class="image"><img
+                            alt="Бор.jpg" src="/wiki/images/e/ea/%D0%91%D0%BE%D1%80.jpg" width="467" height="284"/></a>
+                </p>
+                <h3><span class="mw-headline"
+                          id=".D0.A8.D0.B0.D0.B3_2._.D0.9F.D1.80.D0.B5.D0.BE.D0.B1.D1.80.D0.B0.D0.B7.D0.BE.D0.B2.D0.B0.D0.BD.D0.B8.D0.B5_.D0.B1.D0.BE.D1.80.D0.B0">Шаг 2. Преобразование бора</span><span
+                        class="mw-editsection"><span class="mw-editsection-bracket">[</span><a
+                        href="/wiki/index.php?title=%D0%90%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC_%D0%90%D1%85%D0%BE-%D0%9A%D0%BE%D1%80%D0%B0%D1%81%D0%B8%D0%BA&amp;action=edit&amp;section=4"
+                        title="Редактировать раздел «Шаг 2. Преобразование бора»">править</a><span
+                        class="mw-editsection-bracket">]</span></span></h3>
+                <p>Обозначим за <span style='display:none'>[math][u][/math]</span> слово, приводящее в вершину <span
+                        style='display:none'>[math]u[/math]</span> в боре.<br/>
+                    Узлы бора можно понимать как состояния <a
+                            href="/wiki/index.php?title=%D0%94%D0%B5%D1%82%D0%B5%D1%80%D0%BC%D0%B8%D0%BD%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D1%8B%D0%B5_%D0%BA%D0%BE%D0%BD%D0%B5%D1%87%D0%BD%D1%8B%D0%B5_%D0%B0%D0%B2%D1%82%D0%BE%D0%BC%D0%B0%D1%82%D1%8B"
+                            title="Детерминированные конечные автоматы"> автомата</a>, а корень как начальное состояние.<br/>
+                    Узлы бора, в которых заканчиваются строки, становятся терминальными.<br/>
+                    Для переходов по автомату заведём в узлах несколько функций:<br/>
+                </p>
+                <ul>
+                    <li><span style='display:none'>[math]\mathrm{parent}(u)[/math]</span> — возвращает родителя вершины
+                        <span style='display:none'>[math]u[/math]</span>;<br/></li>
+                    <li><span style='display:none'>[math]\pi(u) = \delta(\pi(\mathrm{parent}(u)), c)[/math]</span> — <b>суффиксная
+                        ссылка</b>, и существует переход из <span
+                            style='display:none'>[math]\mathrm{parent}(u)[/math]</span> в <span style='display:none'>[math]u[/math]</span>
+                        по символу <span style='display:none'>[math]c[/math]</span>;<br/></li>
+                    <li><span style='display:none'>[math]\delta(u, c) =
+  \begin{cases}
+     v,                 &amp;\text{if $v$ is son by symbol $c$ in trie;}\\
+     root,              &amp;\text{if $u$ is root and $u$ has no child by symbol $c$ in trie}\\
+     \delta(\pi(u), c), &amp;\text{else.}
+   \end{cases}[/math]</span> — функция перехода.
+                    </li>
+                </ul>
+                <p>Мы можем понимать рёбра бора как переходы в автомате по соответствующей букве. Однако одними только
+                    рёбрами бора нельзя ограничиваться. Если мы пытаемся выполнить переход по какой-либо букве, а
+                    соответствующего ребра в боре нет, то мы тем не менее должны перейти в какое-то состояние. Для этого
+                    нам и нужны суффиксные ссылки.
+                    <br/> Суффиксная ссылка <span style='display:none'>[math]\pi(u) = v[/math]</span>, если <span
+                            style='display:none'>[math][v][/math]</span> — максимальный суффикс <span
+                            style='display:none'>[math][u][/math]</span>, <span style='display:none'>[math][v]\neq[u][/math]</span>.
+                    Функции перехода и суффиксные ссылки можно найти либо алгоритмом <a
+                            href="/wiki/index.php?title=%D0%9E%D0%B1%D1%85%D0%BE%D0%B4_%D0%B2_%D0%B3%D0%BB%D1%83%D0%B1%D0%B8%D0%BD%D1%83,_%D1%86%D0%B2%D0%B5%D1%82%D0%B0_%D0%B2%D0%B5%D1%80%D1%88%D0%B8%D0%BD"
+                            title="Обход в глубину, цвета вершин"> обхода в глубину</a> с ленивыми вычислениями, либо с
+                    помощью алгоритма <a
+                            href="/wiki/index.php?title=%D0%9E%D0%B1%D1%85%D0%BE%D0%B4_%D0%B2_%D1%88%D0%B8%D1%80%D0%B8%D0%BD%D1%83"
+                            title="Обход в ширину"> обхода в ширину</a>.
+                </p>
+                <p>Из определений выше можно заметить два следующих факта:
+                </p>
+                <ul>
+                    <li> функция перехода определена через суффиксную ссылку, а суффиксная ссылка — через функию
+                        переходов;
+                    </li>
+                    <li> для построения суффиксных ссылок небходимо знать информацию только выше по бору от текущей
+                        вершины до корня.
+                    </li>
+                </ul>
+                <p>Это позволяет реализовать функции поиска переходов по символу и суффиксных ссылок ленивым образом при
+                    помощи взаимной рекурсии.
+                </p>
+                <h4><span class="mw-headline"
+                          id=".D0.9F.D1.80.D0.B8.D0.BC.D0.B5.D1.80_.D0.B0.D0.B2.D1.82.D0.BE.D0.BC.D0.B0.D1.82.D0.B0_.D0.90.D1.85.D0.BE-.D0.9A.D0.BE.D1.80.D0.B0.D1.81.D0.B8.D0.BA">Пример автомата Ахо-Корасик</span><span
+                        class="mw-editsection"><span class="mw-editsection-bracket">[</span><a
+                        href="/wiki/index.php?title=%D0%90%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC_%D0%90%D1%85%D0%BE-%D0%9A%D0%BE%D1%80%D0%B0%D1%81%D0%B8%D0%BA&amp;action=edit&amp;section=5"
+                        title="Редактировать раздел «Пример автомата Ахо-Корасик»">править</a><span
+                        class="mw-editsection-bracket">]</span></span></h4>
+                <p><a href="/wiki/index.php?title=%D0%A4%D0%B0%D0%B9%D0%BB:Axo.jpg" class="image"><img alt="Axo.jpg"
+                                                                                                       src="/wiki/images/d/d6/Axo.jpg"
+                                                                                                       width="500"
+                                                                                                       height="400"/></a><br/>
+                    Пунктиром обозначены суффиксные ссылки. Из вершин, для которых они не показаны, суффиксные ссылки
+                    идут в корень.
+                </p>
+                <p>Суффиксная ссылка для каждой вершины <span style='display:none'>[math]u[/math]</span> — это вершина,
+                    в которой оканчивается наидлиннейший собственный суффикс строки, соответствующей вершине <span
+                            style='display:none'>[math]u[/math]</span>. Единственный особый случай — корень бора: для
+                    удобства суффиксную ссылку из него проведём в себя же. Например, для вершины <span
+                            style='display:none'>[math]5[/math]</span> с соответствующей ей строкой <span
+                            style='display:none'>[math]\textbf{she}[/math]</span> максимальным подходящим суффиксом
+                    является строка <span style='display:none'>[math]\textbf{he}[/math]</span>. Видим, что такая строка
+                    заканчивается в вершине <span style='display:none'>[math]2[/math]</span>. Следовательно суффиксной
+                    ссылкой вершины для <span style='display:none'>[math]5[/math]</span> является вершина <span
+                            style='display:none'>[math]2[/math]</span>.
+                </p>
+                <h3><span class="mw-headline"
+                          id=".D0.A8.D0.B0.D0.B3_3._.D0.9F.D0.BE.D1.81.D1.82.D1.80.D0.BE.D0.B5.D0.BD.D0.B8.D0.B5_.D1.81.D0.B6.D0.B0.D1.82.D1.8B.D1.85_.D1.81.D1.83.D1.84.D1.84.D0.B8.D0.BA.D1.81.D0.BD.D1.8B.D1.85_.D1.81.D1.81.D1.8B.D0.BB.D0.BE.D0.BA">Шаг 3. Построение сжатых суффиксных ссылок</span><span
+                        class="mw-editsection"><span class="mw-editsection-bracket">[</span><a
+                        href="/wiki/index.php?title=%D0%90%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC_%D0%90%D1%85%D0%BE-%D0%9A%D0%BE%D1%80%D0%B0%D1%81%D0%B8%D0%BA&amp;action=edit&amp;section=6"
+                        title="Редактировать раздел «Шаг 3. Построение сжатых суффиксных ссылок»">править</a><span
+                        class="mw-editsection-bracket">]</span></span></h3>
+                <p>При построении автомата может возникнуть такая ситуация, что ветвление есть не на каждом символе.
+                    Тогда можно маленький бамбук заменить одним ребром. Для этого и используются сжатые суффиксные
+                    ссылки.
+                </p>
+                <p><span style='display:none'>[math]up(u) =
+  \begin{cases}
+    \pi(u),     &amp;\text{if $\pi(u)$ is terminal;}\\
+    \varnothing,&amp;\text{if $\pi(u)$ is root;}\\
+    up(\pi(u)), &amp;\text{else.}
+  \end{cases}[/math]</span>
+                </p>
+                <p>где <span style='display:none'>[math]up[/math]</span> — сжатая суффиксная ссылка, т.е. ближайшее
+                    допускающее состояние (терминал) перехода по суффиксным ссылкам. Аналогично обычным суффиксным
+                    ссылкам сжатые суффиксные ссылки могут быть найдены при помощи ленивой рекурсии.
+                </p>
+                <h2><span class="mw-headline"
+                          id=".D0.98.D1.81.D0.BF.D0.BE.D0.BB.D1.8C.D0.B7.D0.BE.D0.B2.D0.B0.D0.BD.D0.B8.D0.B5_.D0.B0.D0.B2.D1.82.D0.BE.D0.BC.D0.B0.D1.82.D0.B0">Использование автомата</span><span
+                        class="mw-editsection"><span class="mw-editsection-bracket">[</span><a
+                        href="/wiki/index.php?title=%D0%90%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC_%D0%90%D1%85%D0%BE-%D0%9A%D0%BE%D1%80%D0%B0%D1%81%D0%B8%D0%BA&amp;action=edit&amp;section=7"
+                        title="Редактировать раздел «Использование автомата»">править</a><span
+                        class="mw-editsection-bracket">]</span></span></h2>
+                <p>Теперь нужно сказать немного слов о том, как мы будем использовать наш автомат. По очереди
+                    просматриваем символы текста. Для очередного символа <span
+                            style='display:none'>[math]c[/math]</span> переходим из текущего состояния <span
+                            style='display:none'>[math]u[/math]</span> в состояние, которое вернёт функция <span
+                            style='display:none'>[math]\delta(u, c)[/math]</span>. Оказавшись в новом состоянии,
+                    отмечаем по сжатым суффиксным ссылкам строки, которые нам встретились и их позицию (если требуется).
+                    Если новое состояние является терминалом, то соответствующие ему строки тоже отмечаем.<br/>
+                </p>
+                <h2><span class="mw-headline"
+                          id=".D0.9F.D1.80.D0.B8.D0.BC.D0.B5.D1.80_.D1.80.D0.B5.D0.B0.D0.BB.D0.B8.D0.B7.D0.B0.D1.86.D0.B8.D0.B8">Пример реализации</span><span
+                        class="mw-editsection"><span class="mw-editsection-bracket">[</span><a
+                        href="/wiki/index.php?title=%D0%90%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC_%D0%90%D1%85%D0%BE-%D0%9A%D0%BE%D1%80%D0%B0%D1%81%D0%B8%D0%BA&amp;action=edit&amp;section=8"
+                        title="Редактировать раздел «Пример реализации»">править</a><span
+                        class="mw-editsection-bracket">]</span></span></h2>
+                <p>Ниже представлена реализация некоторых функций (используется ленивая рекурсия).<br/>
+                    <span style='display:none'>[math]k[/math]</span> — размер алфавита.
+                </p>
+                <p><b>Структура вершины:</b>
+                </p>
+                <pre><b>struct</b> Node:
+    <b>Node</b> son[k]                                 <font color="green">// массив сыновей</font>
+    <b>Node</b> go[k]                                  <font color="green">// массив переходов (запоминаем переходы в ленивой рекурсии), используемый для вычисления суффиксных ссылок</font>
+    <b>Node</b> parent                                 <font color="green">// вершина родитель</font>
+    <b>Node</b> suffLink                               <font color="green">// суффиксная ссылка (вычисляем в ленивой рекурсии)</font>
+    <b>Node</b> up                                     <font color="green">// сжатая суффиксная ссылка</font>
+    <b>char</b> charToParent                           <font color="green">// символ, ведущий к родителю</font>
+    <b>bool</b> isLeaf                                 <font
+                            color="green">// флаг, является ли вершина терминалом</font>
+    <b>vector&lt;int&gt;</b> leafPatternNumber               <font color="green">// номера строк, за которые отвечает терминал</font>
+</pre>
+                <p><b>Функция для вычисления суффиксной ссылки:</b>
+                </p>
+                <pre><b>Node</b> getSuffLink(<b>Node</b> v):
+    <b>if</b> v.suffLink == <i>null</i>                       <font color="green">// если суффиксная ссылка ещё не вычислена</font>
+       <b>if</b> v == root <b>or</b> v.parent == root
+            v.suffLink = root
+       <b>else</b>
+            v.suffLink = getLink(getSuffLink(v.parent), v.charToParent)
+    <b>return</b> v.suffLink
+
+</pre>
+                <p><b>Функция для вычисления перехода:</b>
+                </p>
+                <pre><b>Node</b> getLink(<b>Node</b> v, <b>char</b> c):
+   <b>if</b> v.go[c] == <i>null</i>                           <font color="green">// если переход по символу c ещё не вычислен</font>
+        <b>if</b> v.son[c]
+            v.go[c] = v.son[c]
+        <b>else</b> <b>if</b> v == root
+            v.go[c] = root
+        <b>else</b>
+            v.go[c] = getLink(getSuffLink(v), c)
+    <b>return</b> v.go[c]
+
+</pre>
+                <p><b>Функция для вычисления сжатой суффиксной ссылки:</b>
+                </p>
+                <pre><b>Node</b> getUp(<b>Node</b> v):
+    <b>if</b> v.up == <i>null</i>                             <font color="green">// если сжатая суффиксная ссылка ещё не вычислена</font>
+        <b>if</b> getSuffLink(v).isLeaf
+            v.up = getSuffLink(v)
+        <b>else</b> <b>if</b> getSuffLink(v) == root
+            v.up = root
+        <b>else</b>
+            v.up = getUp(getSuffLink(v))
+    <b>return</b> v.up
+</pre>
+                <p><b>Функция для добавления строки в бор:</b>
+                </p>
+                <pre><b>fun</b> addString(<b>string</b> s, <b>int</b> patternNumber):
+    <b>Node</b> cur = root
+    <b>for</b> i = 0 <b>to</b> s.length - 1
+        <b>char</b> c = s[i]
+        <b>if</b> cur.son[c] == 0
+            cur.son[c] = Node
+            <font color="green">/* здесь также нужно обнулить указатели на переходы и сыновей */</font>
+            cur.son[c].suffLink = 0
+            cur.son[c].up = 0
+            cur.son[c].parent = cur
+            cur.son[c].charToParent = c
+            cur.son[c].isLeaf = <i>false</i>
+        cur = cur.son[c]
+    cur.isLeaf = <i>true</i>
+    cur.leafPatternNumber.pushBack(patternNumber)
+</pre>
+                <p><b>Функция для процессинга текста (поиск, встречается строка или нет):</b>
+                </p>
+                <pre><b>fun</b> processText(<b>string</b> t):
+    <b>Node</b> cur = root
+    <b>for</b> i = 0 <b>to</b> t.length - 1
+        <b>char</b> c = t[i] - 'a'
+        cur = getLink(cur, c)
+        <font color="green">/* В этом месте кода должен выполняться переход по <b>сжатой</b> суффиксной ссылке getUp(cur). Для вершины,
+           обнаруженной по ней тоже ставим, что она найдена, затем повторяем для её сжатой суффиксной ссылки
+           и так до корня. */</font>
+</pre>
+                <p>Кроме этих функций требуется инициализация, но она имеет отношение только к кодированию, поэтому
+                    здесь приведена не будет.
+                </p>
+                <h2><span class="mw-headline" id=".D0.9E.D0.BF.D1.82.D0.B8.D0.BC.D0.B8.D0.B7.D0.B0.D1.86.D0.B8.D0.B8">Оптимизации</span><span
+                        class="mw-editsection"><span class="mw-editsection-bracket">[</span><a
+                        href="/wiki/index.php?title=%D0%90%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC_%D0%90%D1%85%D0%BE-%D0%9A%D0%BE%D1%80%D0%B0%D1%81%D0%B8%D0%BA&amp;action=edit&amp;section=9"
+                        title="Редактировать раздел «Оптимизации»">править</a><span
+                        class="mw-editsection-bracket">]</span></span></h2>
+                <p>Существует несколько оптимизаций данного алгоритма, направленных на случаи, когда нас интересует
+                    только первое вхождение образца в текст:
+                </p>
+                <ol>
+                    <li><b>Сброс сжатых суффиксных ссылок для посещённых вершин.</b>
+                        <dl>
+                            <dd> Существенно ускорить работу алгоритма могут пометки о посещённости узла, то есть если
+                                узел посещён, то не переходить по сжатым суффиксным ссылкам. Вместо хранения пометок
+                                можно просто сбрасывать сжатую суффиксную ссылку.
+                            </dd>
+                        </dl>
+                    </li>
+                    <li><b>Сброс пометки терминальной вершины.</b>
+                        <dl>
+                            <dd> В изначальном множестве образцов могут быть дублирующиеся строки. Мы можем хотеть из
+                                различать, если с одинаковыми строками связана разная мета-информация. Тогда при
+                                попадании в терминальную вершину можно осуществлять сброс пометки этой терминальной
+                                вершины, что сэкономит время на обновлении информации о вхождении образцов в текст.
+                                Тривиальным примером, в котором возникает ситуация долгой обработки, служит огромное
+                                множество образцов из одинаковых символов и текст только из этих символов.
+                            </dd>
+                        </dl>
+                    </li>
+                </ol>
+                <h2><span class="mw-headline"
+                          id=".D0.9F.D0.BE.D0.B8.D1.81.D0.BA_.D1.88.D0.B0.D0.B1.D0.BB.D0.BE.D0.BD.D0.BE.D0.B2_.D1.81_.D0.BC.D0.B0.D1.81.D0.BA.D0.B0.D0.BC.D0.B8">Поиск шаблонов с масками</span><span
+                        class="mw-editsection"><span class="mw-editsection-bracket">[</span><a
+                        href="/wiki/index.php?title=%D0%90%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC_%D0%90%D1%85%D0%BE-%D0%9A%D0%BE%D1%80%D0%B0%D1%81%D0%B8%D0%BA&amp;action=edit&amp;section=10"
+                        title="Редактировать раздел «Поиск шаблонов с масками»">править</a><span
+                        class="mw-editsection-bracket">]</span></span></h2>
+                <table border="0" width="100%">
+                    <tr>
+                        <td style="background-color: #ddd"><b>Задача:</b></td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px dashed #2f6fab; padding: 8px; background-color: #fcfcfc; font-style: italic;">
+                            Пусть <span style='display:none'>[math]\varphi[/math]</span> — маска, обозначающая любой
+                            одиночный символ. Необходимо найти для каждого заданного шаблона с масками все его вхождения
+                            в текст.<br/></td>
+                    </tr>
+                </table>
+                <p>Например, шаблон <span style='display:none'>[math]ab\varphi\varphi c\varphi[/math]</span>, который
+                    содержит в себе три маски, встречается на позициях <span style='display:none'>[math]2[/math]</span>
+                    и <span style='display:none'>[math]7[/math]</span> строки <span style='display:none'>[math]xabvccababcax[/math]</span>.
+                </p>
+                <h3><span class="mw-headline"
+                          id=".D0.90.D0.BB.D0.B3.D0.BE.D1.80.D0.B8.D1.82.D0.BC_.D0.BF.D0.BE.D0.B8.D1.81.D0.BA.D0.B0">Алгоритм поиска</span><span
+                        class="mw-editsection"><span class="mw-editsection-bracket">[</span><a
+                        href="/wiki/index.php?title=%D0%90%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC_%D0%90%D1%85%D0%BE-%D0%9A%D0%BE%D1%80%D0%B0%D1%81%D0%B8%D0%BA&amp;action=edit&amp;section=11"
+                        title="Редактировать раздел «Алгоритм поиска»">править</a><span
+                        class="mw-editsection-bracket">]</span></span></h3>
+                <p>Для того чтобы найти все вхождения в текст заданного шаблона с масками <span style='display:none'>[math]Q[/math]</span>,
+                    необходимо обнаружить вхождения в текст всех его безмасочных кусков.<br/>
+                    Пусть <span style='display:none'>[math]\{Q_1, \dots, Q_k \}[/math]</span> — набор подстрок
+                    <span style='display:none'>[math]Q[/math]</span>, разделенных масками, и пусть <span
+                            style='display:none'>[math]\{ l_1, \dots, l_k \}[/math]</span> — их стартовые позиции в
+                    <span style='display:none'>[math]Q[/math]</span>. Например, шаблон <span style='display:none'>[math]ab\varphi\varphi c\varphi[/math]</span>
+                    содержит две подстроки без масок <span style='display:none'>[math]ab[/math]</span> и <span
+                            style='display:none'>[math]c[/math]</span> и их стартовые позиции соответственно <span
+                            style='display:none'>[math]1[/math]</span> и <span
+                            style='display:none'>[math]5[/math]</span>. Для алгоритма понадобится массив <span
+                            style='display:none'>[math]C[/math]</span>. <span
+                            style='display:none'>[math]C[i][/math]</span> — количество встретившихся в тексте
+                    безмасочных подстрок шаблона, который начинается в тексте на позиции <span style='display:none'>[math]i[/math]</span>.
+                    Тогда появление подстроки <span style='display:none'>[math]Q_i[/math]</span> в тексте на позиции
+                    <span style='display:none'>[math]j[/math]</span> будет означать возможное появление шаблона на
+                    позиции <span style='display:none'>[math]j - l_i + 1[/math]</span>.<br/>
+                </p>
+                <ol>
+                    <li> Используя алгоритм Ахо-Корасик, находим безмасочные подстроки шаблона <span
+                            style='display:none'>[math]Q[/math]</span>: когда находим <span style='display:none'>[math]Q_i[/math]</span>
+                        в тексте <span style='display:none'>[math]T[/math]</span> на позиции <span style='display:none'>[math]j[/math]</span>,
+                        увеличиваем на единицу <span style='display:none'>[math]C[j - l_i + 1][/math]</span>.<br/></li>
+                    <li> Каждое <span style='display:none'>[math]i[/math]</span>, для которого <span
+                            style='display:none'>[math]C[i] = k[/math]</span>, является стартовой позицией появления
+                        шаблона <span style='display:none'>[math]Q[/math]</span> в тексте.<br/></li>
+                </ol>
+                <p>Рассмотрим подстроку текста <span style='display:none'>[math]T[i \dots i+n-1][/math]</span>.
+                    Равенство <span style='display:none'>[math]C[i] = k[/math]</span> будет означать, что подстроки
+                    текста <span style='display:none'>[math] T[i + l_1 \dots i + l_1 + |Q_1| - 1],  T[i + l_2 \dots i + l_2 + |Q_2| - 1][/math]</span>
+                    и так далее будут равны соответственно безмасочным подстрокам шаблона <span style='display:none'>[math]\{Q_1, \dots , Q_k \}[/math]</span>.
+                    Остальная часть шаблона является масками, поэтому шаблон входит в текст на позиции <span
+                            style='display:none'>[math]i[/math]</span>.<br/>
+                    Поиск подстрок заданного шаблона с помощью алгоритма Ахо-Корасик выполняется за время <span
+                            style='display:none'>[math]O(m+n+a)[/math]</span>, где <span style='display:none'>[math]n[/math]</span>
+                    — суммарная длина подстрок, то есть длина шаблона, <span style='display:none'>[math]m[/math]</span>
+                    — длина текста, <span style='display:none'>[math]a[/math]</span> — количество появлений подстрок
+                    шаблона. Далее просто надо пробежаться по массиву <span style='display:none'>[math]C[/math]</span> и
+                    просмотреть значения ячеек за время <span style='display:none'>[math]O (m)[/math]</span>.
+                </p>
+                <h2><span class="mw-headline" id=".D0.A1.D0.BC._.D1.82.D0.B0.D0.BA.D0.B6.D0.B5">См. также</span><span
+                        class="mw-editsection"><span class="mw-editsection-bracket">[</span><a
+                        href="/wiki/index.php?title=%D0%90%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC_%D0%90%D1%85%D0%BE-%D0%9A%D0%BE%D1%80%D0%B0%D1%81%D0%B8%D0%BA&amp;action=edit&amp;section=12"
+                        title="Редактировать раздел «См. также»">править</a><span
+                        class="mw-editsection-bracket">]</span></span></h2>
+                <ul>
+                    <li>
+                        <a href="/wiki/index.php?title=%D0%90%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC_%D0%91%D0%BE%D0%B9%D0%B5%D1%80%D0%B0-%D0%9C%D1%83%D1%80%D0%B0"
+                           title="Алгоритм Бойера-Мура">Алгоритм Бойера-Мура</a></li>
+                    <li>
+                        <a href="/wiki/index.php?title=%D0%90%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC_%D0%9A%D0%BD%D1%83%D1%82%D0%B0-%D0%9C%D0%BE%D1%80%D1%80%D0%B8%D1%81%D0%B0-%D0%9F%D1%80%D0%B0%D1%82%D1%82%D0%B0"
+                           title="Алгоритм Кнута-Морриса-Пратта">Алгоритм Кнута-Морриса-Пратта</a></li>
+                </ul>
+                <h2><span class="mw-headline"
+                          id=".D0.98.D1.81.D1.82.D0.BE.D1.87.D0.BD.D0.B8.D0.BA.D0.B8_.D0.B8.D0.BD.D1.84.D0.BE.D1.80.D0.BC.D0.B0.D1.86.D0.B8.D0.B8">Источники информации</span><span
+                        class="mw-editsection"><span class="mw-editsection-bracket">[</span><a
+                        href="/wiki/index.php?title=%D0%90%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC_%D0%90%D1%85%D0%BE-%D0%9A%D0%BE%D1%80%D0%B0%D1%81%D0%B8%D0%BA&amp;action=edit&amp;section=13"
+                        title="Редактировать раздел «Источники информации»">править</a><span
+                        class="mw-editsection-bracket">]</span></span></h2>
+                <ul>
+                    <li><a rel="nofollow" class="external text" href="http://e-maxx.ru/algo/aho_corasick">MAXimal&#160;::
+                        algo&#160;:: Алгоритм Ахо-Корасик</a></li>
+                    <li><a rel="nofollow" class="external text" href="http://aho-corasick.narod.ru">Сопоставление
+                        множеств и алгоритм Ахо-Корасик</a></li>
+                    <li><a rel="nofollow" class="external text" href="http://codeforces.com/blog/entry/14854?locale=ru">Codeforces&#160;::
+                        Алгоритм Ахо-Корасик</a></li>
+                    <li><a rel="nofollow" class="external text" href="https://habrahabr.ru/post/198682/">Habr&#160;::
+                        Алгоритм Ахо-Корасик</a></li>
+                    <li><a rel="nofollow" class="external text"
+                           href="https://ru.wikipedia.org/wiki/%D0%90%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC_%D0%90%D1%85%D0%BE_%E2%80%94_%D0%9A%D0%BE%D1%80%D0%B0%D1%81%D0%B8%D0%BA">Wiki&#160;::
+                        Алгоритм Ахо-Корасик</a></li>
+                </ul>
+
+                <!--
+                NewPP limit report
+                Cached time: 20201226210444
+                Cache expiry: 86400
+                Dynamic content: false
+                CPU time usage: 0.020 seconds
+                Real time usage: 0.022 seconds
+                Preprocessor visited node count: 786/1000000
+                Preprocessor generated node count: 1761/1000000
+                Post‐expand include size: 2053/2097152 bytes
+                Template argument size: 554/2097152 bytes
+                Highest expansion depth: 3/40
+                Expensive parser function count: 0/100
+                -->
+                <!--
+                Transclusion expansion time report (%,ms,calls,template)
+                100.00%    5.806      1 -total
+                 26.70%    1.550      2 Шаблон:Задача
+                 18.11%    1.051     15 Шаблон:---
+                -->
+            </div>
+            <!-- Saved in parser cache with key wikidb:pcache:idhash:971-0!canonical and timestamp 20201226210444 and revision id 72157
+             -->
+        </div>
+        <div class="printfooter">
+            Источник — «<a dir="ltr"
+                           href="http://neerc.ifmo.ru/wiki/index.php?title=Алгоритм_Ахо-Корасик&amp;oldid=72157">http://neerc.ifmo.ru/wiki/index.php?title=Алгоритм_Ахо-Корасик&amp;oldid=72157</a>»
+        </div>
+        <div id="catlinks" class="catlinks" data-mw="interface">
+            <div id="mw-normal-catlinks" class="mw-normal-catlinks"><a
+                    href="/wiki/index.php?title=%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:%D0%9A%D0%B0%D1%82%D0%B5%D0%B3%D0%BE%D1%80%D0%B8%D0%B8"
+                    title="Служебная:Категории">Категории</a>:
+                <ul>
+                    <li>
+                        <a href="/wiki/index.php?title=%D0%9A%D0%B0%D1%82%D0%B5%D0%B3%D0%BE%D1%80%D0%B8%D1%8F:%D0%94%D0%B8%D1%81%D0%BA%D1%80%D0%B5%D1%82%D0%BD%D0%B0%D1%8F_%D0%BC%D0%B0%D1%82%D0%B5%D0%BC%D0%B0%D1%82%D0%B8%D0%BA%D0%B0_%D0%B8_%D0%B0%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC%D1%8B"
+                           title="Категория:Дискретная математика и алгоритмы">Дискретная математика и алгоритмы</a>
+                    </li>
+                    <li>
+                        <a href="/wiki/index.php?title=%D0%9A%D0%B0%D1%82%D0%B5%D0%B3%D0%BE%D1%80%D0%B8%D1%8F:%D0%9F%D0%BE%D0%B8%D1%81%D0%BA_%D0%BF%D0%BE%D0%B4%D1%81%D1%82%D1%80%D0%BE%D0%BA%D0%B8_%D0%B2_%D1%81%D1%82%D1%80%D0%BE%D0%BA%D0%B5"
+                           title="Категория:Поиск подстроки в строке">Поиск подстроки в строке</a></li>
+                    <li>
+                        <a href="/wiki/index.php?title=%D0%9A%D0%B0%D1%82%D0%B5%D0%B3%D0%BE%D1%80%D0%B8%D1%8F:%D0%A2%D0%BE%D1%87%D0%BD%D1%8B%D0%B9_%D0%BF%D0%BE%D0%B8%D1%81%D0%BA"
+                           title="Категория:Точный поиск">Точный поиск</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="visualClear"></div>
+    </div>
+</div>
+<div id="mw-navigation">
+    <h2>Навигация</h2>
+
+    <div id="mw-head">
+        <div id="p-personal" role="navigation" class="" aria-labelledby="p-personal-label">
+            <h3 id="p-personal-label">Персональные инструменты</h3>
+            <ul>
+                <li id="pt-anonuserpage">Вы не представились системе</li>
+                <li id="pt-anontalk"><a
+                        href="/wiki/index.php?title=%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:%D0%9C%D0%BE%D1%91_%D0%BE%D0%B1%D1%81%D1%83%D0%B6%D0%B4%D0%B5%D0%BD%D0%B8%D0%B5"
+                        title="Страница обсуждений для моего IP [n]" accesskey="n">Обсуждение</a></li>
+                <li id="pt-anoncontribs"><a
+                        href="/wiki/index.php?title=%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:%D0%9C%D0%BE%D0%B9_%D0%B2%D0%BA%D0%BB%D0%B0%D0%B4"
+                        title="Список правок, сделанных с этого IP-адреса [y]" accesskey="y">Вклад</a></li>
+                <li id="pt-createaccount"><a
+                        href="/wiki/index.php?title=%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:%D0%A1%D0%BE%D0%B7%D0%B4%D0%B0%D1%82%D1%8C_%D1%83%D1%87%D1%91%D1%82%D0%BD%D1%83%D1%8E_%D0%B7%D0%B0%D0%BF%D0%B8%D1%81%D1%8C&amp;returnto=%D0%90%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC+%D0%90%D1%85%D0%BE-%D0%9A%D0%BE%D1%80%D0%B0%D1%81%D0%B8%D0%BA"
+                        title="Мы предлагаем вам создать учётную запись и войти в систему, хотя это и не обязательно.">Создать
+                    учётную запись</a></li>
+                <li id="pt-login"><a
+                        href="/wiki/index.php?title=%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:%D0%92%D1%85%D0%BE%D0%B4&amp;returnto=%D0%90%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC+%D0%90%D1%85%D0%BE-%D0%9A%D0%BE%D1%80%D0%B0%D1%81%D0%B8%D0%BA"
+                        title="Здесь можно зарегистрироваться в системе, но это необязательно. [o]"
+                        accesskey="o">Войти</a></li>
+            </ul>
+        </div>
+        <div id="left-navigation">
+            <div id="p-namespaces" role="navigation" class="vectorTabs" aria-labelledby="p-namespaces-label">
+                <h3 id="p-namespaces-label">Пространства имён</h3>
+                <ul>
+                    <li id="ca-nstab-main" class="selected"><span><a
+                            href="/wiki/index.php?title=%D0%90%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC_%D0%90%D1%85%D0%BE-%D0%9A%D0%BE%D1%80%D0%B0%D1%81%D0%B8%D0%BA"
+                            title="Просмотр основной страницы [c]" accesskey="c">Статья</a></span></li>
+                    <li id="ca-talk" class="new"><span><a
+                            href="/wiki/index.php?title=%D0%9E%D0%B1%D1%81%D1%83%D0%B6%D0%B4%D0%B5%D0%BD%D0%B8%D0%B5:%D0%90%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC_%D0%90%D1%85%D0%BE-%D0%9A%D0%BE%D1%80%D0%B0%D1%81%D0%B8%D0%BA&amp;action=edit&amp;redlink=1"
+                            rel="discussion" title="Обсуждение основной страницы [t]"
+                            accesskey="t">Обсуждение</a></span></li>
+                </ul>
+            </div>
+            <div id="p-variants" role="navigation" class="vectorMenu emptyPortlet" aria-labelledby="p-variants-label">
+                <h3 id="p-variants-label">
+                    <span>Варианты</span>
+                </h3>
+
+                <div class="menu">
+                    <ul>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div id="right-navigation">
+            <div id="p-views" role="navigation" class="vectorTabs" aria-labelledby="p-views-label">
+                <h3 id="p-views-label">Просмотры</h3>
+                <ul>
+                    <li id="ca-view" class="selected"><span><a
+                            href="/wiki/index.php?title=%D0%90%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC_%D0%90%D1%85%D0%BE-%D0%9A%D0%BE%D1%80%D0%B0%D1%81%D0%B8%D0%BA">Читать</a></span>
+                    </li>
+                    <li id="ca-edit"><span><a
+                            href="/wiki/index.php?title=%D0%90%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC_%D0%90%D1%85%D0%BE-%D0%9A%D0%BE%D1%80%D0%B0%D1%81%D0%B8%D0%BA&amp;action=edit"
+                            title="Редактировать данную страницу [e]" accesskey="e">Править</a></span></li>
+                    <li id="ca-history" class="collapsible"><span><a
+                            href="/wiki/index.php?title=%D0%90%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC_%D0%90%D1%85%D0%BE-%D0%9A%D0%BE%D1%80%D0%B0%D1%81%D0%B8%D0%BA&amp;action=history"
+                            title="Журнал изменений страницы [h]" accesskey="h">История</a></span></li>
+                </ul>
+            </div>
+            <div id="p-cactions" role="navigation" class="vectorMenu emptyPortlet" aria-labelledby="p-cactions-label">
+                <h3 id="p-cactions-label"><span>Ещё</span></h3>
+
+                <div class="menu">
+                    <ul>
+                    </ul>
+                </div>
+            </div>
+            <div id="p-search" role="search">
+                <h3>
+                    <label for="searchInput">Поиск</label>
+                </h3>
+
+                <form action="/wiki/index.php" id="searchform">
+                    <div id="simpleSearch">
+                        <input type="search" name="search" placeholder="Искать в Викиконспекты"
+                               title="Искать в Викиконспекты [f]" accesskey="f" id="searchInput"/><input type="hidden"
+                                                                                                         value="Служебная:Поиск"
+                                                                                                         name="title"/><input
+                            type="submit" name="fulltext" value="Найти"
+                            title="Найти страницы, содержащие указанный текст" id="mw-searchButton"
+                            class="searchButton mw-fallbackSearchButton"/><input type="submit" name="go" value="Перейти"
+                                                                                 title="Перейти к странице, имеющей в точности такое название"
+                                                                                 id="searchButton"
+                                                                                 class="searchButton"/></div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="mw-panel">
+        <div id="p-logo" role="banner"><a class="mw-wiki-logo"
+                                          href="/wiki/index.php?title=%D0%97%D0%B0%D0%B3%D0%BB%D0%B0%D0%B2%D0%BD%D0%B0%D1%8F_%D1%81%D1%82%D1%80%D0%B0%D0%BD%D0%B8%D1%86%D0%B0"
+                                          title="Перейти на заглавную страницу"></a></div>
+        <div class="portal" role="navigation" id='p-navigation' aria-labelledby='p-navigation-label'>
+            <h3 id='p-navigation-label'>Навигация</h3>
+
+            <div class="body">
+                <ul>
+                    <li id="n-mainpage-description"><a
+                            href="/wiki/index.php?title=%D0%97%D0%B0%D0%B3%D0%BB%D0%B0%D0%B2%D0%BD%D0%B0%D1%8F_%D1%81%D1%82%D1%80%D0%B0%D0%BD%D0%B8%D1%86%D0%B0"
+                            title="Перейти на заглавную страницу [z]" accesskey="z">Заглавная страница</a></li>
+                    <li id="n-recentchanges"><a
+                            href="/wiki/index.php?title=%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:%D0%A1%D0%B2%D0%B5%D0%B6%D0%B8%D0%B5_%D0%BF%D1%80%D0%B0%D0%B2%D0%BA%D0%B8"
+                            title="Список последних изменений [r]" accesskey="r">Свежие правки</a></li>
+                    <li id="n-randompage"><a
+                            href="/wiki/index.php?title=%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:%D0%A1%D0%BB%D1%83%D1%87%D0%B0%D0%B9%D0%BD%D0%B0%D1%8F_%D1%81%D1%82%D1%80%D0%B0%D0%BD%D0%B8%D1%86%D0%B0"
+                            title="Посмотреть случайно выбранную страницу [x]" accesskey="x">Случайная статья</a></li>
+                    <li id="n-help"><a href="https://www.mediawiki.org/wiki/Special:MyLanguage/Help:Contents"
+                                       title="Место, где можно получить справку">Справка</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="portal" role="navigation" id='p-tb' aria-labelledby='p-tb-label'>
+            <h3 id='p-tb-label'>Инструменты</h3>
+
+            <div class="body">
+                <ul>
+                    <li id="t-whatlinkshere"><a
+                            href="/wiki/index.php?title=%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:%D0%A1%D1%81%D1%8B%D0%BB%D0%BA%D0%B8_%D1%81%D1%8E%D0%B4%D0%B0/%D0%90%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC_%D0%90%D1%85%D0%BE-%D0%9A%D0%BE%D1%80%D0%B0%D1%81%D0%B8%D0%BA"
+                            title="Список всех страниц, ссылающихся на данную [j]" accesskey="j">Ссылки сюда</a></li>
+                    <li id="t-recentchangeslinked"><a
+                            href="/wiki/index.php?title=%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:%D0%A1%D0%B2%D1%8F%D0%B7%D0%B0%D0%BD%D0%BD%D1%8B%D0%B5_%D0%BF%D1%80%D0%B0%D0%B2%D0%BA%D0%B8/%D0%90%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC_%D0%90%D1%85%D0%BE-%D0%9A%D0%BE%D1%80%D0%B0%D1%81%D0%B8%D0%BA"
+                            rel="nofollow"
+                            title="Последние изменения в страницах, на которые ссылается эта страница [k]"
+                            accesskey="k">Связанные правки</a></li>
+                    <li id="t-specialpages"><a
+                            href="/wiki/index.php?title=%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:%D0%A1%D0%BF%D0%B5%D1%86%D1%81%D1%82%D1%80%D0%B0%D0%BD%D0%B8%D1%86%D1%8B"
+                            title="Список служебных страниц [q]" accesskey="q">Спецстраницы</a></li>
+                    <li id="t-print"><a
+                            href="/wiki/index.php?title=%D0%90%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC_%D0%90%D1%85%D0%BE-%D0%9A%D0%BE%D1%80%D0%B0%D1%81%D0%B8%D0%BA&amp;printable=yes"
+                            rel="alternate" title="Версия этой страницы для печати [p]" accesskey="p">Версия для
+                        печати</a></li>
+                    <li id="t-permalink"><a
+                            href="/wiki/index.php?title=%D0%90%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC_%D0%90%D1%85%D0%BE-%D0%9A%D0%BE%D1%80%D0%B0%D1%81%D0%B8%D0%BA&amp;oldid=72157"
+                            title="Постоянная ссылка на эту версию страницы">Постоянная ссылка</a></li>
+                    <li id="t-info"><a
+                            href="/wiki/index.php?title=%D0%90%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC_%D0%90%D1%85%D0%BE-%D0%9A%D0%BE%D1%80%D0%B0%D1%81%D0%B8%D0%BA&amp;action=info"
+                            title="Подробнее об этой странице">Сведения о странице</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="footer" role="contentinfo">
+    <ul id="footer-info">
+        <li id="footer-info-lastmod"> Эта страница последний раз была отредактирована 19 января 2020 в 19:42.</li>
+    </ul>
+    <ul id="footer-places">
+        <li id="footer-places-privacy"><a
+                href="/wiki/index.php?title=%D0%92%D0%B8%D0%BA%D0%B8%D0%BA%D0%BE%D0%BD%D1%81%D0%BF%D0%B5%D0%BA%D1%82%D1%8B:%D0%9F%D0%BE%D0%BB%D0%B8%D1%82%D0%B8%D0%BA%D0%B0_%D0%BA%D0%BE%D0%BD%D1%84%D0%B8%D0%B4%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D0%BE%D1%81%D1%82%D0%B8"
+                title="Викиконспекты:Политика конфиденциальности">Политика конфиденциальности</a></li>
+        <li id="footer-places-about"><a
+                href="/wiki/index.php?title=%D0%92%D0%B8%D0%BA%D0%B8%D0%BA%D0%BE%D0%BD%D1%81%D0%BF%D0%B5%D0%BA%D1%82%D1%8B:%D0%9E%D0%BF%D0%B8%D1%81%D0%B0%D0%BD%D0%B8%D0%B5"
+                class="mw-redirect" title="Викиконспекты:Описание">О Викиконспекты</a></li>
+        <li id="footer-places-disclaimer"><a
+                href="/wiki/index.php?title=%D0%92%D0%B8%D0%BA%D0%B8%D0%BA%D0%BE%D0%BD%D1%81%D0%BF%D0%B5%D0%BA%D1%82%D1%8B:%D0%9E%D1%82%D0%BA%D0%B0%D0%B7_%D0%BE%D1%82_%D0%BE%D1%82%D0%B2%D0%B5%D1%82%D1%81%D1%82%D0%B2%D0%B5%D0%BD%D0%BD%D0%BE%D1%81%D1%82%D0%B8"
+                title="Викиконспекты:Отказ от ответственности">Отказ от ответственности</a></li>
+        <li id="footer-places-mobileview"><a
+                href="http://neerc.ifmo.ru/wiki/index.php?title=%D0%90%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC_%D0%90%D1%85%D0%BE-%D0%9A%D0%BE%D1%80%D0%B0%D1%81%D0%B8%D0%BA&amp;mobileaction=toggle_view_mobile"
+                class="noprint stopMobileRedirectToggle">Мобильная версия</a></li>
+    </ul>
+    <ul id="footer-icons" class="noprint">
+        <li id="footer-poweredbyico">
+            <a href="//www.mediawiki.org/"><img src="/wiki/resources/assets/poweredby_mediawiki_88x31.png"
+                                                alt="Powered by MediaWiki"
+                                                srcset="/wiki/resources/assets/poweredby_mediawiki_132x47.png 1.5x, /wiki/resources/assets/poweredby_mediawiki_176x62.png 2x"
+                                                width="88" height="31"/></a></li>
+    </ul>
+    <div style="clear:both"></div>
+</div>
+<script>(window.RLQ = window.RLQ || []).push(function () {
+    mw.config.set({
+        "wgPageParseReport": {
+            "limitreport": {
+                "cputime": "0.020",
+                "walltime": "0.022",
+                "ppvisitednodes": {"value": 786, "limit": 1000000},
+                "ppgeneratednodes": {"value": 1761, "limit": 1000000},
+                "postexpandincludesize": {"value": 2053, "limit": 2097152},
+                "templateargumentsize": {"value": 554, "limit": 2097152},
+                "expansiondepth": {"value": 3, "limit": 40},
+                "expensivefunctioncount": {"value": 0, "limit": 100},
+                "timingprofile": ["100.00%    5.806      1 -total", " 26.70%    1.550      2 Шаблон:Задача", " 18.11%    1.051     15 Шаблон:---"]
+            }, "cachereport": {"timestamp": "20201226210444", "ttl": 86400, "transientcontent": false}
+        }
+    });
+});</script>
+<script>(window.RLQ = window.RLQ || []).push(function () {
+    mw.config.set({"wgBackendResponseTime": 310});
+});</script>
+</body>
+</html>
